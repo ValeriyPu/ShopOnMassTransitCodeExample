@@ -22,6 +22,8 @@ namespace Warehouse.src.Consumers
             if (service.CancelOrder(msg.OrderId))
             {
                 context.Send<BaseSuccessNotification<CancelOrderRequest>>(msg.ResponseQueueUri, new BaseSuccessNotification<CancelOrderRequest> { OriginalRequest = msg });
+                //Отправим нотификацию в Common
+                context.Send<BaseSuccessNotification<CancelOrderRequest>>(QueueNamesService.GetQueueName(QueueNamesService.Queues.Common), new BaseSuccessNotification<CancelOrderRequest> { OriginalRequest = msg });
             }
             else
             {

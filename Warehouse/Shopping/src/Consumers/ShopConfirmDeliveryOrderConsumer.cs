@@ -22,6 +22,9 @@ namespace Warehouse.src.Consumers
             if (service.ConfirmDeliveryOrder(msg.OrderId))
             {
                 context.Send<BaseSuccessNotification<ConfirmDeliveryOrderRequest>>(msg.ResponseQueueUri, new BaseSuccessNotification<ConfirmDeliveryOrderRequest> { OriginalRequest = msg });
+
+                //Отправим нотификацию в Common
+                context.Send<BaseSuccessNotification<ConfirmDeliveryOrderRequest>>(QueueNamesService.GetQueueName(QueueNamesService.Queues.Common), new BaseSuccessNotification<ConfirmDeliveryOrderRequest> { OriginalRequest = msg });
             }
             else
             {

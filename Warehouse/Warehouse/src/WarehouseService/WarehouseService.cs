@@ -62,6 +62,12 @@ namespace Warehouse.src.WarehouseService
             .ToList();
         }
 
+        public bool MoveItems(eWarehouseActionTypes actionType, Guid orderId)
+        {
+            var items = context.Orders.Where(item => item.Id == orderId).Select(item => item.Items).FirstOrDefault();
+            return MoveItems(actionType, items.Select(item=> modelMapper.Map<WarehouseItemWithCount>(item)).ToList());
+        }
+
         //CRUD с обработкой ошибок
         public bool MoveItems(eWarehouseActionTypes actionType, List<WarehouseItemWithCount> items)
         {

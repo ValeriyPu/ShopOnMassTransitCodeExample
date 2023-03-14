@@ -1,6 +1,7 @@
 ﻿using DataObjects.DTO.Warehouse;
 using DataObjects.DTO.Warehouse.GetItemsList.Requests;
 using DataObjects.DTO.Warehouse.MoveData.Move;
+using System;
 using System.Collections.Generic;
 
 namespace Warehouse.interfaces
@@ -18,6 +19,8 @@ namespace Warehouse.interfaces
         /// <returns>True в случае успеха</returns>
         public bool MoveItems(eWarehouseActionTypes actionType, List<WarehouseItemWithCount> items);
 
+        bool MoveItems(eWarehouseActionTypes actionType, Guid orderId);
+
         /// <summary>
         /// Получает все товары заданного типа
         /// </summary>
@@ -31,5 +34,7 @@ namespace Warehouse.interfaces
         /// <param name="item">Список товаров</param>
         /// <returns>Список товаров с количеством доступных для резервирования</returns>
         public List<WarehouseItemWithCount> GetItemsCount(List<WarehouseItem> item);
+        
+
     }
 }
