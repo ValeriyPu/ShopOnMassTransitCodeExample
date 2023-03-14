@@ -1,0 +1,4 @@
+﻿{
+  "MassTransitConnectionParams": "Server=localhost\\SQLEXPRESS;Database=test;Integrated Security=False;TrustServerCertificate=True;User Id=test;Password=test;",
+  "ConnectionString": "Server=localhost\\SQLEXPRESS;Database=test;Integrated Security=False;TrustServerCertificate=True;User Id=test;Password=test;"
+}
