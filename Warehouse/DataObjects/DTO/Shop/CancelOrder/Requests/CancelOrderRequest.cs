@@ -6,7 +6,7 @@ namespace DataObjects.DTO.Shop.BuyItems.Requests
     /// <summary>
     /// Запрос на отмену заказа
     /// </summary>
-    public class CancelOrderRequest : BasePersonaficiedRequest
+    public class CancelOrderRequest : BaseRequest
     {
         /// <summary>
         /// Id заказа

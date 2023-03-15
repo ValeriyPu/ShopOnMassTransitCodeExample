@@ -6,7 +6,7 @@ namespace DataObjects.DTO.Shop.BuyItems.Requests
     /// <summary>
     /// Запрос на получение статуса заказа
     /// </summary>
-    public class CheckOrderStatusRequest : BasePersonaficiedRequest
+    public class CheckOrderStatusRequest : BaseRequest
     {
         /// <summary>
         /// Id заказа

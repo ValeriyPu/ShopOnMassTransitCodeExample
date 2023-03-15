@@ -8,7 +8,7 @@ namespace DataObjects.DTO.Shop.BuyItems.Requests
     /// <summary>
     /// Обьект, описывающий базовые действия в магазине
     /// </summary>
-    public class ShopCreateOrderRequest : BasePersonaficiedRequest
+    public class ShopCreateOrderRequest : BaseRequest
     {
         /// <summary>
         /// Список товаров
