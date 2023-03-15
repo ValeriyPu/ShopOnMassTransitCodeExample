@@ -25,13 +25,13 @@ namespace Warehouse.src.Consumers
             {
                 var res = service.CreateOrder(msg.ItemsToBuy, msg.userId);
 
-                context.Send<BaseSuccessNotification<ShopCreateOrderRequest>>(msg.ResponseQueueUri, new BaseSuccessNotification<ShopCreateOrderRequest> { MainObjectId = res, OriginalRequest = msg });
+                context.Respond<BaseSuccessNotification<ShopCreateOrderRequest>>(new BaseSuccessNotification<ShopCreateOrderRequest> { MainObjectId = res, OriginalRequest = msg });
                 //Отправим нотификацию в Common
                 context.Send<ShopCreateOrderRequestNotification>(QueueNamesService.GetQueueName(QueueNamesService.Queues.Common), new ShopCreateOrderRequestNotification { orderId = res, ItemsToBuy = msg.ItemsToBuy });
             }
             catch(Exception ex)
             {
-                context.Send<BaseFailNotification<ShopCreateOrderRequest>>(msg.ResponseQueueUri, new BaseSuccessNotification<ShopCreateOrderRequest> { OriginalRequest = msg });
+                context.Respond<BaseFailNotification<ShopCreateOrderRequest>>(new BaseFailNotification<ShopCreateOrderRequest> { OriginalRequest = msg });
             }
         }
     }

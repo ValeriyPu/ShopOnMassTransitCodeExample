@@ -22,7 +22,7 @@ namespace Warehouse.src.Consumers
         {
             var status = service.CheckOrderStatus(msg.OrderId);
             
-            context.Send<CheckOrderStatusNotification>(msg.ResponseQueueUri, new CheckOrderStatusNotification{ OriginalRequest = msg, OrderStatus = status });
+            context.Respond<CheckOrderStatusNotification>(new CheckOrderStatusNotification{ OriginalRequest = msg, OrderStatus = status });
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Warehouse.src.Consumers
         {
             if (service.CancelOrder(msg.OrderId))
             {
-                context.Send<BaseSuccessNotification<CancelOrderRequest>>(msg.ResponseQueueUri, new BaseSuccessNotification<CancelOrderRequest> { OriginalRequest = msg });
+                context.Respond<BaseSuccessNotification<CancelOrderRequest>>(new BaseSuccessNotification<CancelOrderRequest> { OriginalRequest = msg });
 
                 var items = service.GetItems(msg.OrderId);
                 //Отправим нотификацию в Common
@@ -30,7 +30,7 @@ namespace Warehouse.src.Consumers
             }
             else
             {
-                context.Send<BaseFailNotification<CancelOrderRequest>>(msg.ResponseQueueUri, new BaseSuccessNotification<CancelOrderRequest> { OriginalRequest = msg });
+                context.Respond<BaseFailNotification<CancelOrderRequest>>(new BaseFailNotification<CancelOrderRequest> { OriginalRequest = msg });
             }
         }
     }

@@ -22,7 +22,7 @@ namespace Warehouse.src.Consumers
         {
             if (service.ConfirmDeliveryOrder(msg.OrderId))
             {
-                context.Send<BaseSuccessNotification<ConfirmDeliveryOrderRequest>>(msg.ResponseQueueUri, new BaseSuccessNotification<ConfirmDeliveryOrderRequest> { OriginalRequest = msg });
+                context.Respond<BaseSuccessNotification<ConfirmDeliveryOrderRequest>>(new BaseSuccessNotification<ConfirmDeliveryOrderRequest> { OriginalRequest = msg });
 
                 var items = service.GetItems(msg.OrderId);
                 //Отправим нотификацию в Common
@@ -30,7 +30,7 @@ namespace Warehouse.src.Consumers
             }
             else
             {
-                context.Send<BaseFailNotification<ConfirmDeliveryOrderRequest>>(msg.ResponseQueueUri, new BaseSuccessNotification<ConfirmDeliveryOrderRequest> { OriginalRequest = msg });
+                context.Respond<BaseFailNotification<ConfirmDeliveryOrderRequest>>(new BaseFailNotification<ConfirmDeliveryOrderRequest> { OriginalRequest = msg });
             }
         }
     }
