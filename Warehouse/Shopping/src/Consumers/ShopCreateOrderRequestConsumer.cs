@@ -1,5 +1,6 @@
 ﻿using DataObjects.BaseItems.Notification;
 using DataObjects.DTO.Shop.BuyItems.Requests;
+using DataObjects.DTO.Shop.CancelOrder.Notification;
 using DataObjects.DTO.Warehouse.MoveData.Move;
 using DataObjects.MassTransit;
 using DataObjects.MassTransit.AbstractConsumer;
@@ -26,7 +27,7 @@ namespace Warehouse.src.Consumers
 
                 context.Send<BaseSuccessNotification<ShopCreateOrderRequest>>(msg.ResponseQueueUri, new BaseSuccessNotification<ShopCreateOrderRequest> { MainObjectId = res, OriginalRequest = msg });
                 //Отправим нотификацию в Common
-                context.Send<BaseSuccessNotification<ShopCreateOrderRequest>>(QueueNamesService.GetQueueName(QueueNamesService.Queues.Common), new BaseSuccessNotification<ShopCreateOrderRequest> { MainObjectId = res, OriginalRequest = msg });
+                context.Send<ShopCreateOrderRequestNotification>(QueueNamesService.GetQueueName(QueueNamesService.Queues.Common), new ShopCreateOrderRequestNotification { orderId = res, ItemsToBuy = msg.ItemsToBuy });
             }
             catch(Exception ex)
             {

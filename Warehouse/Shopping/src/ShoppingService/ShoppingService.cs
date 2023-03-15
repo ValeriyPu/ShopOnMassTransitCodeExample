@@ -96,5 +96,13 @@ namespace Shopping.src.ShoppingService
         {
             throw new NotImplementedException();
         }
+
+        public List<WarehouseItemWithCount> GetItems(Guid orderId)
+        {
+            return context.Orders.Where(item=>item.Id== orderId)
+                .Select(item=> item.Items
+                    .Select(item2=> modelMapper.Map<WarehouseItemWithCount>(item2)).ToList()
+            ).FirstOrDefault();
+        }
     }
 }

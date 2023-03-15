@@ -1,7 +1,5 @@
-﻿using DataObjects.BaseItems.Notification;
-using DataObjects.DTO.Shop.BuyItems.Requests;
-using DataObjects.DTO.Warehouse.GetItemsList.Notification;
-using DataObjects.DTO.Warehouse.GetItemsList.Requests;
+﻿using DataObjects.DTO.Shop.BuyItems.Requests;
+using DataObjects.DTO.Shop.CancelOrder.Notification;
 using DataObjects.MassTransit;
 using DataObjects.MassTransit.AbstractConsumer;
 using DataObjects.MassTransit.ConsumersRegistration;
@@ -15,14 +13,14 @@ namespace Warehouse.src.Consumers.ShopWorkflow
     /// Обработчик сообщений BaseSuccessNotification<ShopCreateOrderRequest>
     /// </summary>
     [Consumer(queue = QueueNamesService.Queues.Common)]
-    public class ShopCancelOrderRequestSuccessNotificationConsumer : AbstractRequestConsumer<BaseSuccessNotification<CancelOrderRequest>, IWarehouseService>
+    public class ShopCancelOrderRequestSuccessNotificationConsumer : AbstractRequestConsumer<ShopCancelOrderRequestNotification, IWarehouseService>
     {
         /// <summary>
         /// Конструктор
         /// </summary>
         /// <param name="logger">логгер</param>
         /// <param name="service">сервис для работы со складом</param>
-        public ShopCancelOrderRequestSuccessNotificationConsumer(ILogger<BaseSuccessNotification<CancelOrderRequest>> logger, IWarehouseService service) : base(logger, service)
+        public ShopCancelOrderRequestSuccessNotificationConsumer(ILogger<ShopCancelOrderRequestNotification> logger, IWarehouseService service) : base(logger, service)
         {
         }
 
@@ -33,13 +31,13 @@ namespace Warehouse.src.Consumers.ShopWorkflow
         /// <param name="msg">сообщение</param>
         /// <param name="service">сервис для работы со складом</param>
         /// <param name="logger">логгер</param>
-        protected override void ProcessRequest(ConsumeContext<BaseSuccessNotification<CancelOrderRequest>> context, BaseSuccessNotification<CancelOrderRequest> msg, IWarehouseService service, ILogger<BaseSuccessNotification<CancelOrderRequest>> logger)
+        protected override void ProcessRequest(ConsumeContext<ShopCancelOrderRequestNotification> context, ShopCancelOrderRequestNotification msg, IWarehouseService service, ILogger<ShopCancelOrderRequestNotification> logger)
         {
-            var res = service.MoveItems(DataObjects.DTO.Warehouse.MoveData.Move.eWarehouseActionTypes.Unbook, msg.OriginalRequest.OrderId);
+            var res = service.MoveItems(DataObjects.DTO.Warehouse.MoveData.Move.eWarehouseActionTypes.Unbook, msg.ItemsToBuy);
 
             if (res == false)
             {
-                var ans = new CancelOrderRequest { OrderId = msg.MainObjectId };
+                var ans = new CancelOrderRequest { OrderId = msg.orderId };
                 context.Send(QueueNamesService.GetQueueName(QueueNamesService.Queues.Shopping), ans);
             };
         }

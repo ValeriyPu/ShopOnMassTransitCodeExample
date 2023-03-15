@@ -1,5 +1,6 @@
 ﻿using DataObjects.BaseItems.Notification;
 using DataObjects.DTO.Shop.BuyItems.Requests;
+using DataObjects.DTO.Shop.CancelOrder.Notification;
 using DataObjects.DTO.Warehouse.GetItemsList.Notification;
 using DataObjects.DTO.Warehouse.GetItemsList.Requests;
 using DataObjects.MassTransit;
@@ -15,14 +16,14 @@ namespace Warehouse.src.Consumers.ShopWorkflow
     /// Обработчик сообщений BaseSuccessNotification<ShopCreateOrderRequest>
     /// </summary>
     [Consumer(queue = QueueNamesService.Queues.Common)]
-    public class ShopConfirmDeliverySuccessNotificationConsumer : AbstractRequestConsumer<BaseSuccessNotification<ConfirmDeliveryOrderRequest>, IWarehouseService>
+    public class ShopConfirmDeliverySuccessNotificationConsumer : AbstractRequestConsumer<ShopConfirmDeliveryOrderRequestNotification, IWarehouseService>
     {
         /// <summary>
         /// Конструктор
         /// </summary>
         /// <param name="logger">логгер</param>
         /// <param name="service">сервис для работы со складом</param>
-        public ShopConfirmDeliverySuccessNotificationConsumer(ILogger<BaseSuccessNotification<ConfirmDeliveryOrderRequest>> logger, IWarehouseService service) : base(logger, service)
+        public ShopConfirmDeliverySuccessNotificationConsumer(ILogger<ShopConfirmDeliveryOrderRequestNotification> logger, IWarehouseService service) : base(logger, service)
         {
         }
 
@@ -33,13 +34,13 @@ namespace Warehouse.src.Consumers.ShopWorkflow
         /// <param name="msg">сообщение</param>
         /// <param name="service">сервис для работы со складом</param>
         /// <param name="logger">логгер</param>
-        protected override void ProcessRequest(ConsumeContext<BaseSuccessNotification<ConfirmDeliveryOrderRequest>> context, BaseSuccessNotification<ConfirmDeliveryOrderRequest> msg, IWarehouseService service, ILogger<BaseSuccessNotification<ConfirmDeliveryOrderRequest>> logger)
+        protected override void ProcessRequest(ConsumeContext<ShopConfirmDeliveryOrderRequestNotification> context, ShopConfirmDeliveryOrderRequestNotification msg, IWarehouseService service, ILogger<ShopConfirmDeliveryOrderRequestNotification> logger)
         {
-            var res = service.MoveItems(DataObjects.DTO.Warehouse.MoveData.Move.eWarehouseActionTypes.Remove, msg.OriginalRequest.OrderId);
+            var res = service.MoveItems(DataObjects.DTO.Warehouse.MoveData.Move.eWarehouseActionTypes.Remove, msg.ItemsToBuy);
 
             if (res == false)
             {
-                var ans = new CancelOrderRequest { OrderId = msg.MainObjectId };
+                var ans = new CancelOrderRequest { OrderId = msg.orderId };
                 context.Send(QueueNamesService.GetQueueName(QueueNamesService.Queues.Shopping), ans);
             };
         }

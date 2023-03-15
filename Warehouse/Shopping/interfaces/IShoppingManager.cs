@@ -25,18 +25,25 @@ namespace Shopping.interfaces
         public eShopStatuses CheckOrderStatus(Guid orderId);
 
         /// <summary>
-        /// Подтвердить получение заказа
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        public bool ConfirmDeliveryOrder(Guid orderId);
-
-        /// <summary>
         /// Создать заказ
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         public Guid CreateOrder(List<WarehouseItemWithCount> items, Guid userId );
+
+        /// <summary>
+        /// Получить товары для данного заказа
+        /// </summary>
+        /// <param name="orderId">Id заказа</param>
+        /// <returns>Список заказов</returns>
+        public List<WarehouseItemWithCount> GetItems(Guid orderId);
+
+        /// <summary>
+        /// Подтвердить получение заказа
+        /// </summary>
+        /// <param name="orderId">Id заказа</param>
+        /// <returns>true в случае успеха</returns>
+        public bool ConfirmDeliveryOrder(Guid orderId);
 
     }
 }

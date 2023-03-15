@@ -19,8 +19,6 @@ namespace Warehouse.interfaces
         /// <returns>True в случае успеха</returns>
         public bool MoveItems(eWarehouseActionTypes actionType, List<WarehouseItemWithCount> items);
 
-        bool MoveItems(eWarehouseActionTypes actionType, Guid orderId);
-
         /// <summary>
         /// Получает все товары заданного типа
         /// </summary>

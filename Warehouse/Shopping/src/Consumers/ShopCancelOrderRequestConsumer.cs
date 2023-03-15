@@ -1,5 +1,6 @@
 ﻿using DataObjects.BaseItems.Notification;
 using DataObjects.DTO.Shop.BuyItems.Requests;
+using DataObjects.DTO.Shop.CancelOrder.Notification;
 using DataObjects.MassTransit;
 using DataObjects.MassTransit.AbstractConsumer;
 using DataObjects.MassTransit.ConsumersRegistration;
@@ -22,8 +23,10 @@ namespace Warehouse.src.Consumers
             if (service.CancelOrder(msg.OrderId))
             {
                 context.Send<BaseSuccessNotification<CancelOrderRequest>>(msg.ResponseQueueUri, new BaseSuccessNotification<CancelOrderRequest> { OriginalRequest = msg });
+
+                var items = service.GetItems(msg.OrderId);
                 //Отправим нотификацию в Common
-                context.Send<BaseSuccessNotification<CancelOrderRequest>>(QueueNamesService.GetQueueName(QueueNamesService.Queues.Common), new BaseSuccessNotification<CancelOrderRequest> { OriginalRequest = msg });
+                context.Send<ShopCancelOrderRequestNotification>(QueueNamesService.GetQueueName(QueueNamesService.Queues.Common), new ShopCancelOrderRequestNotification { ItemsToBuy = items });
             }
             else
             {
