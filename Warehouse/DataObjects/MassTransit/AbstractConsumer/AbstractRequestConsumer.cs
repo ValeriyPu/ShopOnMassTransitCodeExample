@@ -74,6 +74,9 @@ namespace DataObjects.MassTransit.AbstractConsumer
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
+                //В MassTransit Consumer не падает полностью при возникновении исключения.
+                //Сообщение переходит в очередь _error
+                throw;
             }
         }
 

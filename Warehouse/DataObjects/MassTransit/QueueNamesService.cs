@@ -13,8 +13,17 @@ namespace DataObjects.MassTransit
         /// </summary>
         public enum Queues
         {
+            /// <summary>
+            /// Общая очередь
+            /// </summary>
             Common,
+            /// <summary>
+            /// Очередь с сообщениями для сервиса магазина
+            /// </summary>
             Shopping,
+            /// <summary>
+            /// Очередь с сообщениями для склада
+            /// </summary>
             Warehouse
         }
 

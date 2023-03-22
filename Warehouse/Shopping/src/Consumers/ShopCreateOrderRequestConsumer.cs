@@ -32,6 +32,7 @@ namespace Warehouse.src.Consumers
             catch(Exception ex)
             {
                 context.Respond<BaseFailNotification<ShopCreateOrderRequest>>(new BaseFailNotification<ShopCreateOrderRequest> { OriginalRequest = msg });
+                throw;
             }
         }
     }

@@ -65,45 +65,37 @@ namespace Warehouse.src.WarehouseService
         //CRUD с обработкой ошибок
         public bool MoveItems(eWarehouseActionTypes actionType, List<WarehouseItemWithCount> items)
         {
-            try
-            {
-                var id_list = items.Select(item => item.Id);
+            var id_list = items.Select(item => item.Id);
 
-                var itemsToProcess = context.WarehouseItems.Where(item => id_list.Contains(item.Id));
+            var itemsToProcess = context.WarehouseItems.Where(item => id_list.Contains(item.Id));
 
-                if ((actionType == eWarehouseActionTypes.Unbook) ||
-                    (actionType == eWarehouseActionTypes.Book))
-                    foreach (var item in itemsToProcess)
-                    {
-                        preformAction(modelMapper.Map<WarehouseItem>(item), actionType);
-                    }
-                else
+            if ((actionType == eWarehouseActionTypes.Unbook) ||
+                (actionType == eWarehouseActionTypes.Book))
+                foreach (var item in itemsToProcess)
                 {
-                    switch (actionType)
-                    {
-                        case eWarehouseActionTypes.Add:
-                            var data = modelMapper.Map<WarehouseItemModel>(items);
-
-                            context.WarehouseItems.AddRange(data);
-                            context.SaveChanges();
-                            break;
-                        case eWarehouseActionTypes.Remove:
-                            var ids = items.Select(item => item.Id).ToList();
-                            var items_to_delete = context.WarehouseItems.Where(item => ids.Contains(item.Id));
-
-                            context.WarehouseItems.RemoveRange(items_to_delete);
-
-                            context.SaveChanges();
-                            break;
-                    }
+                    preformAction(modelMapper.Map<WarehouseItem>(item), actionType);
                 }
-                return true;
-            }
-            catch (Exception ex)
+            else
             {
-                _logger.LogError(ex.Message);
-                return false;
+                switch (actionType)
+                {
+                    case eWarehouseActionTypes.Add:
+                        var data = modelMapper.Map<WarehouseItemModel>(items);
+
+                        context.WarehouseItems.AddRange(data);
+                        context.SaveChanges();
+                        break;
+                    case eWarehouseActionTypes.Remove:
+                        var ids = items.Select(item => item.Id).ToList();
+                        var items_to_delete = context.WarehouseItems.Where(item => ids.Contains(item.Id));
+
+                        context.WarehouseItems.RemoveRange(items_to_delete);
+
+                        context.SaveChanges();
+                        break;
+                }
             }
+            return true;
         }
 
         /// <summary>

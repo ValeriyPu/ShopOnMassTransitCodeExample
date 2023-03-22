@@ -41,7 +41,7 @@ namespace Warehouse.src.Consumers
                 Items = items
             };
 
-            context.Send<WarehouseItemListNotification>(QueueNamesService.GetQueueName(QueueNamesService.Queues.Common), ans);
+           context.Send<WarehouseItemListNotification>(QueueNamesService.GetQueueName(QueueNamesService.Queues.Common), ans);
         }
     }
 }

@@ -32,25 +32,17 @@ namespace Shopping.src.ShoppingService
 
         public bool CancelOrder(Guid orderId)
         {
-            try
+            var item = context.Orders.FirstOrDefault(item => item.Id == orderId);
+            if (item != null)
             {
-                var item = context.Orders.FirstOrDefault(item => item.Id == orderId);
-                if (item != null)
-                {
-                    item.OrderState = DatabaseItems.Database.Shopping.eOrderState.Cancelled;
-                    context.Orders.Update(item);
+                item.OrderState = DatabaseItems.Database.Shopping.eOrderState.Cancelled;
+                context.Orders.Update(item);
 
-                    return true;
-                }
-                else
-                {
-                    _logger.LogError("No order found with id :" + orderId.ToString());
-                    return false;
-                }
+                return true;
             }
-            catch(Exception ex)
+            else
             {
-                _logger.LogError(ex.ToString());
+                _logger.LogError("No order found with id :" + orderId.ToString());
                 return false;
             }
         }
@@ -69,25 +61,19 @@ namespace Shopping.src.ShoppingService
 
         public bool ConfirmDeliveryOrder(Guid orderId)
         {
-            try
+            var item = context.Orders.FirstOrDefault(item => item.Id == orderId);
+            if (item != null)
             {
-                var item = context.Orders.FirstOrDefault(item => item.Id == orderId);
-                if (item != null)
-                {
-                    item.OrderState = DatabaseItems.Database.Shopping.eOrderState.RecieveConfirm;
-                    context.Orders.Update(item);
+                item.OrderState = DatabaseItems.Database.Shopping.eOrderState.RecieveConfirm;
+                context.Orders.Update(item);
 
-                    return true;
-                }
-                else
-                {
-                    _logger.LogError("No order found with id :" + orderId.ToString());
-                    return false;
-                }
+                context.SaveChanges();
+
+                return true;
             }
-            catch (Exception ex)
+            else
             {
-                _logger.LogError(ex.ToString());
+                _logger.LogError("No order found with id :" + orderId.ToString());
                 return false;
             }
         }

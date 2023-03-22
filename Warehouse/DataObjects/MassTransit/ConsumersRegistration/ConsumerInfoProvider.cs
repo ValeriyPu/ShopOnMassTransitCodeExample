@@ -3,6 +3,9 @@ using System;
 
 namespace DataObjects.MassTransit.ConsumersRegistration
 {
+    /// <summary>
+    /// Класс с информацией о регистрации IConsumer-ов
+    /// </summary>
     public class Info
     {
         /// <summary>
@@ -15,6 +18,9 @@ namespace DataObjects.MassTransit.ConsumersRegistration
         public Type type;
     }
 
+    /// <summary>
+    /// Сервис для получения всех типов с аттрибутом ConsumerAttribute и дополнительной информации о них
+    /// </summary>
     public class ConsumerInfoProvider : AttributeProcessor<ConsumerAttribute, Info>
     {
         
